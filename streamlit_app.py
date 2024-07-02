@@ -4,11 +4,10 @@ from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image
 from tensorflow.keras.applications.vgg16 import preprocess_input
 
-# Load the trained model
 MODEL_PATH = 'chest_xray.h5'
 model = load_model(MODEL_PATH)
 
-# Custom CSS for styling
+#  CSS for styling
 st.markdown("""
     <style>
         .main {
@@ -42,30 +41,29 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# Streamlit app
+# Streamlit applicatin
 st.markdown('<h1 class="title">Pneumonia Detection from Chest X-rays</h1>', unsafe_allow_html=True)
 st.markdown('<p class="subtitle">Upload a chest X-ray image to detect if the person has pneumonia or not.</p>', unsafe_allow_html=True)
 
-# Image upload
+# Image uploading
 uploaded_file = st.file_uploader("Choose an X-ray image...", type="jpeg")
 
 if uploaded_file is not None:
-    # Display the uploaded image
+    # Display the uploaded imge
     st.image(uploaded_file, caption='Uploaded X-ray image.', use_column_width=True)
     st.markdown('<hr>', unsafe_allow_html=True)
 
-    # Preprocess the image
+    # Preprocess and predicting
     img = image.load_img(uploaded_file, target_size=(224, 224))
     x = image.img_to_array(img)
     x = np.expand_dims(x, axis=0)
     img_data = preprocess_input(x)
 
-    # Prediction
-    classes = model.predict(img_data)
-    result = int(classes[0][0])
+    prediction = model.predict(img_data)
+    result = np.argmax(prediction)
 
-    # Display the result with styling
     if result == 0:
-        st.markdown('<p class="result">Prediction: The person is affected by <span class="normal">PNEUMONIA</span>.</p>', unsafe_allow_html=True)
-    else:
         st.markdown('<p class="result normal">Prediction: The result is NORMAL.</p>', unsafe_allow_html=True)
+    else:
+        st.markdown('<p class="result">Prediction: The person is affected by <span class="normal">PNEUMONIA</span>.</p>', unsafe_allow_html=True)
+    
