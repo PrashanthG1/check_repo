@@ -4,7 +4,7 @@ from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image
 from tensorflow.keras.applications.vgg16 import preprocess_input
 
-MODEL_PATH = 'chest_xray.h5'
+MODEL_PATH = 'penumonia.h5'
 model = load_model(MODEL_PATH)
 
 #  CSS for styling
